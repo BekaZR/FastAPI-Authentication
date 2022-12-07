@@ -22,3 +22,6 @@ class BlogOut(BaseModel):
     title: str
     text: str
     user_id: int
+    
+    class Config:
+        orm_mode=True

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from models.users import User
 
 from schemas.authentification import Login
@@ -18,7 +18,7 @@ router = APIRouter()
 
 
 @router.post("/login", response_model=Token)
-def login(request: Login, db: Session = Depends(get_db)):
+def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == request.username).first()
     
     if not user:
@@ -28,6 +28,9 @@ def login(request: Login, db: Session = Depends(get_db)):
     if not verify_password(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
-    
-    access_token = create_access_token(data={"sub": user.username})
+    data={
+        "user_pk": user.id,
+        "username": user.username
+        }
+    access_token = create_access_token(data)
     return {"access_token": access_token, "token_type": "bearer"}
