@@ -13,4 +13,6 @@ class User(Base):
     username = Column(String(20), unique=True)
     password = Column(String(500))
     
-    blogs = relationship("Blog", back_poplates="user")
+    
+
+

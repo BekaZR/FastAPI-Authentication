@@ -13,5 +13,4 @@ class Blog(Base):
     title = Column(String(50))
     text = Column(String(500))
     user_id = Column(Integer, ForeignKey("user.id"))
-    
-    user = relationship("User", back_populates="blog")
+
