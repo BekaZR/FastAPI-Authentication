@@ -14,6 +14,7 @@ class UserIn(BaseModel):
     password: str
     
     class Config:
+        orm_mode = True
         schema_extra = {
             "example": {
                 "username": "Beka",

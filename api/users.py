@@ -10,6 +10,7 @@ from core.dependices import get_db
 
 from services.hash_password import get_password_hash
 
+from services.users import get_current_user
 
 router = APIRouter()
 
@@ -22,3 +23,8 @@ def registration(user: UserIn, db: Session = Depends(get_db)):
     db.refresh(user_db)
     
     return user_db
+
+@router.get('/api/users/me',  response_model=UserOut)
+def get_user(user: UserOut=Depends(get_current_user)):
+    return user
+

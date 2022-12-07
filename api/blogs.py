@@ -2,7 +2,7 @@ from turtle import title
 from fastapi import APIRouter, Depends
 
 from sqlalchemy.orm import Session
-from api.oauth2 import get_current_user, oauth2_scheme
+from services.users import get_current_user
 
 from core.dependices import get_db
 
@@ -14,8 +14,9 @@ from schemas.users import UserIn, UserOut
 router = APIRouter()
 
 @router.post("/post/", response_model=BlogOut)
-def create_blog(blog: BlogIn, db: Session = Depends(get_db)):
-    blog_db = Blog(title=blog.title, text=blog.text, user_id=blog.user_id)
+def create_blog(blog: BlogIn, current_user: UserOut = Depends(get_current_user), db: Session = Depends(get_db)):
+    blog_db = Blog(title=blog.title, text=blog.text, user_id=current_user.id)
+    
     db.add(blog_db)
     db.commit()
     db.refresh(blog_db)
