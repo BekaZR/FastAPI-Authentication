@@ -1,5 +1,8 @@
 from core.database import Session
 
+from core.settings import Settings
+
+
 # Dependency
 def get_db():
     db = Session()
@@ -7,3 +10,4 @@ def get_db():
         yield db
     finally:
         db.close()
+
