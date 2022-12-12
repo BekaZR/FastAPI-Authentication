@@ -14,6 +14,7 @@ from services.users import get_current_user
 
 router = APIRouter()
 
+
 @router.post('/registration/', response_model=UserOut)
 def registration(user: UserIn, db: Session = Depends(get_db)):
     user_db = User(username=user.username, password=get_password_hash(user.password))
@@ -23,6 +24,7 @@ def registration(user: UserIn, db: Session = Depends(get_db)):
     db.refresh(user_db)
     
     return user_db
+
 
 @router.get('/api/users/me',  response_model=UserOut)
 def get_user(user: UserOut=Depends(get_current_user)):
